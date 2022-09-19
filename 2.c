@@ -15,6 +15,11 @@ int verPrimerpila(struct elemento *cima); // apuntador normal por que no se modi
 int vacia(struct elemento *cima);
 
 int main(){
+
+    struct elemento *apCima = NULL; //si no se inicializa apunta a cualquier lado
+    if(apCima(&apCima, 10)){
+        printf("Se inserto correctamente");
+    }
     printf("\n");
     return 0;
 }
@@ -42,9 +47,6 @@ int eliminar(struct elemento **cima){
 
 }
 int verPrimerpila(struct elemento *cima){
-
-
 }
 int vacia(struct elemento *cima){
-
 }
