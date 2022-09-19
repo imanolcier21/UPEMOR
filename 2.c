@@ -16,10 +16,9 @@ int vacia(struct elemento *cima);
 
 int main(){
 
-    struct elemento *apCima = NULL; //si no se inicializa apunta a cualquier lado
-    if(apCima(&apCima, 10)){
+    struct elemento *Cima = NULL; //si no se inicializa apunta a cualquier lado
+    if(insertar(&Cima, 10))
         printf("Se inserto correctamente");
-    }
     printf("\n");
     return 0;
 }
