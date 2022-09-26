@@ -8,7 +8,6 @@ struct libro{
     int numpag;
 };
 
-
 struct elemento{
     struct libro dato;
     struct elemento *sig;
