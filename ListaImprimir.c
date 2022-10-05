@@ -40,13 +40,33 @@ int main()
             printf("\nElemento insertado\n");
             break;
         case 3:
-            eliminarInicio(&inicioL1,&finL1);
-            printf("Elemento eliminado\n");
+            printf("Introduce el dato ");
+            scanf("%d", &datoNuevo);
+            if(insertarMedio(inicioL1, datoNuevo))
+            printf("\nElemento insertado\n");
             break;
         case 4:
-            eliminarFinal(&inicioL1, &finL1);
-            printf("Elemento eliminado\n");
+            datoNuevo=eliminarInicio(&inicioL1,&finL1);
+            if(datoNuevo!=-1)
+            printf("Elemento eliminado %d\n", datoNuevo);
+            break;
         case 5:
+            datoNuevo=eliminarFinal(&inicioL1, &finL1);
+            if(datoNuevo!=-1)
+            printf("Elemento eliminado %d\n", datoNuevo);
+            break;
+        case 6:
+            datoNuevo=eliminarMedio(inicioL1);
+            if(datoNuevo!=-1)
+            printf("Elemento eliminado %d\n", datoNuevo);
+            break;
+        case 7:
+            printf("Introduce el dato: ");
+            scanf("%d", &datoNuevo);
+            if(insertarOrdenado(&inicioL1, &finL1, datoNuevo));
+            printf("Elemento insertado\n");    
+            break;
+        case 8:
         imprimirLista(inicioL1);
         break;
         case 0:
@@ -64,9 +84,12 @@ int menu(){
     printf("opciones:\n");
     printf("1. Insertar inicio\n");
     printf("2. Insertar final\n");
-    printf("3. Eliminar inicio\n");
-    printf("4. Eliminar final\n");
-    printf("5. Mostrar\n");
+    printf("3. Insertar medio\n");
+    printf("4. Eliminar inicio\n");
+    printf("5. Eliminar final\n");
+    printf("6. Eliminar medio\n");
+    printf("7. Insertar ordenado\n");
+    printf("8. Mostrar\n");
     printf("0. Salir\n");
     printf("Introduce la opción: ");
     scanf("%d", &opc);
@@ -148,7 +171,7 @@ int eliminarFinal(struct elemento **inicio, struct elemento **fin){
     struct elemento *nodoElim, *aux;
     nodoElim = *fin;
     datoElim = nodoElim -> dato;
-    
+   
     if(*inicio==*fin){
         *inicio=NULL;
         *fin=NULL;
@@ -164,11 +187,31 @@ int eliminarFinal(struct elemento **inicio, struct elemento **fin){
     return(datoElim);
 }
 
-/*eliminarMedio(struct elemento *anterior){
-    struct elemento *nodoElim, *aux;
+int eliminarMedio(struct elemento *anterior){
+    struct elemento *nodoElim;
+    int datoElim;
     nodoElim=anterior->sig;
-    int datoElim=nodoElim->sig;
+    datoElim=nodoElim->dato;
     anterior->sig=nodoElim->sig;
     free(nodoElim);
     return datoElim;
-}*/
+}
+
+int insertarOrdenado(struct elemento **inicio, struct elemento **fin, int datoNuevo){
+    if(*inicio==NULL){
+        return insertarInicio(inicio, fin,datoNuevo);
+    }
+    struct elemento *aux=*inicio, *anterior=NULL;
+    while(aux!=NULL){
+        if(aux->dato>=datoNuevo){
+            if(aux==*inicio){
+                return insertarInicio(inicio, fin, datoNuevo);
+        }else{
+            return insertarMedio(anterior, datoNuevo);
+        }
+        }
+        aux=aux->sig;
+        anterior=aux;
+    }
+    return insertarFinal(inicio, fin, datoNuevo);
+}
