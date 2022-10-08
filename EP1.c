@@ -83,6 +83,10 @@ void calcularTiempo(){
     printf("El programa tardó %f segundos en ejecutarse", time_taken);
 }
 
-
+//generar numeros aleatorios para el struct de datos (usar rand())
+void generarNumeros(){
+ 
+    
+}
 
 
