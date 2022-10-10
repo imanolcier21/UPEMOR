@@ -136,7 +136,7 @@ int insertarOrdenado(struct elemento **inicio, struct elemento **fin, int datoNu
             }
             aux=aux->siguiente;
         }
-        return insertarFinal(inicio, fin, datoNuevo);
+        return insertFinal(inicio, fin, datoNuevo);
     }
 
 void imprimirAsc(struct elemento *inicio){
