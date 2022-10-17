@@ -9,11 +9,11 @@ struct elemento{
 };
 
 int insertarInicio(struct elemento **inicio, int datoNuevo);
+void recorrido(struct elemento *inicio);
 
 
 
 int main(){
-
 }
 
 int insertarInicio(struct elemento **inicio, int datoNuevo){
@@ -31,4 +31,17 @@ int insertarInicio(struct elemento **inicio, int datoNuevo){
         aux->siguiente = nuevo;
     }
     *inicio = nuevo;
+}
+
+void recorrido(struct elemento *inicio){
+    struct elemento *aux;
+    aux = inicio;
+    if(inicio==NULL){
+        return ;
+    }else{
+        while(aux->siguiente != inicio){
+            printf("%d", aux->dato);
+            aux = aux->siguiente;
+        }
+    }
 }
