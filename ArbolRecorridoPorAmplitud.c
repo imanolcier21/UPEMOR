@@ -1,16 +1,29 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
- struct nodo {
+struct nodo{
     int dato;
     struct nodo *izq;
     struct nodo *der;
 };
 
+struct elemento{
+    struct nodo *dato;
+  struct elemento *sig;
+};
+
+
+int insertarcola(struct elemento **inicio, struct elemento **fin, struct nodo *datoNuevo);
+struct nodo * eliminar(struct elemento **inicio, struct elemento **fin);
+int vacia(struct elemento *inicio);
+struct nodo * verPrimero(struct elemento *inicio);
+
 int insertar(int dato, struct nodo **raiz);
 void preorden(struct nodo *raiz);
 void inorden(struct nodo *raiz);
 void postorden(struct nodo *raiz);
+void recorridoPorAmplitud(struct nodo *raiz);
+
 
 int main(){
     struct nodo *raiz = NULL;
@@ -20,7 +33,8 @@ int main(){
         printf(" 2. Recorrido preorden\n" );
         printf(" 3. Recorrido inorden\n" );
         printf(" 4. Recorrido postorden\n" );
-        printf(" 5. Salir\n" );
+        printf(" 5. Recorrido por amplitud\n" );
+        printf(" 6. Salir\n" );
         printf(" Ingrese una opcion: " );
         scanf("%d", &opcion);
         switch(opcion){
@@ -45,6 +59,11 @@ int main(){
                 printf(" \n " );
                 break;
             case 5:
+                printf(" Recorrido por amplitud: " );
+                recorridoPorAmplitud(raiz);
+                printf(" \n " );
+                break;
+            case 6:
                 printf(" Fin del programa " );
                 break;
             default:
@@ -52,7 +71,7 @@ int main(){
                 break;
         }
 }
-    while(opcion != 5);
+    while(opcion !=6 );
     return 0;
 }
 
@@ -114,5 +133,70 @@ void postorden(struct nodo *raiz){
     }
 }
 
+int insertarcola(struct elemento **inicio, struct elemento **fin, struct nodo *datoNuevo){
+    struct elemento *nuevo;
+    nuevo=(struct elemento*)malloc(sizeof(struct elemento));
+    if(nuevo==NULL){
+        return 0;
+    }
+    nuevo->dato=datoNuevo;
+    nuevo->sig=NULL;
+    if(*inicio==NULL && *fin==NULL){
+        *inicio=nuevo;
+    }else{
+        (*fin)->sig=nuevo;
+    }
+    *fin=nuevo;
+    return 1;
+}
 
-//recorrido en amplitud
+
+struct nodo * eliminar(struct elemento **inicio, struct elemento **fin){
+    struct nodo *datoElim=NULL;
+    if(*inicio==NULL){
+        return datoElim;
+    }
+    struct elemento *nodoElim= *inicio;
+    datoElim=nodoElim->dato;
+    *inicio=nodoElim->sig;
+    if (*inicio==NULL){
+        *fin=NULL;
+    }
+    free(nodoElim);
+    return datoElim;
+}
+
+int vacia(struct elemento *inicio){
+    if(inicio==NULL){
+        return 1;
+     }
+     return 0;
+}
+
+struct nodo * verPrimero(struct elemento *inicio){
+    if(inicio==NULL){
+        return NULL;
+    }
+    return inicio->dato;
+}
+
+
+void recorridoPorAmplitud(struct nodo *raiz){
+    if(raiz==NULL){
+        return;
+    }
+    struct elemento *inicio=NULL;
+    struct elemento *fin=NULL;
+    struct nodo *aux;
+    insertarcola(&inicio, &fin, raiz);
+    while(!vacia(inicio)){
+    aux=eliminar(&inicio, &fin);
+    printf("%d ", aux->dato);
+    if(aux->izq!=NULL){
+        insertarcola(&inicio, &fin, aux->izq);
+    }
+    if(aux->der!=NULL){
+        insertarcola(&inicio, &fin, aux->der);
+    }
+    }
+}
