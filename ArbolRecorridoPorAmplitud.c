@@ -24,6 +24,9 @@ void inorden(struct nodo *raiz);
 void postorden(struct nodo *raiz);
 void recorridoPorAmplitud(struct nodo *raiz);
 
+int buscar(int datoBuscado, struct nodo *raiz);
+int eliminar(int dato, struct nodo **raiz);
+
 
 int main(){
     struct nodo *raiz = NULL;
@@ -34,7 +37,8 @@ int main(){
         printf(" 3. Recorrido inorden\n" );
         printf(" 4. Recorrido postorden\n" );
         printf(" 5. Recorrido por amplitud\n" );
-        printf(" 6. Salir\n" );
+        printf(" 6. Buscar un dato en el arbol\n" );
+        printf(" 7. Salir\n" );
         printf(" Ingrese una opcion: " );
         scanf("%d", &opcion);
         switch(opcion){
@@ -49,7 +53,7 @@ int main(){
                 printf(" \n " );
                 break;
             case 3:
-                printf(" Recorrido inorden: " );
+                printf(" Recorri do inorden: " );
                 inorden(raiz);
                 printf(" \n " );
                 break;
@@ -64,6 +68,14 @@ int main(){
                 printf(" \n " );
                 break;
             case 6:
+                printf(" Ingrese el dato a buscar: " );
+                scanf("%d", &dato);
+                if(buscar(dato, raiz))
+                    printf(" El dato %d se encuentra en el arbol \n " , dato);
+                else
+                    printf(" El dato %d no se encuentra en el arbol \n " , dato);
+                break;
+            case 7:
                 printf(" Fin del programa " );
                 break;
             default:
@@ -71,7 +83,7 @@ int main(){
                 break;
         }
 }
-    while(opcion !=6 );
+    while(opcion !=7 );
     return 0;
 }
 
@@ -163,7 +175,7 @@ struct nodo * eliminar(struct elemento **inicio, struct elemento **fin){
         *fin=NULL;
     }
     free(nodoElim);
-    return datoElim;
+    return datoElim;int buscar(int datoBuscado, struct nodo *raiz);
 }
 
 int vacia(struct elemento *inicio){
@@ -199,4 +211,34 @@ void recorridoPorAmplitud(struct nodo *raiz){
         insertarcola(&inicio, &fin, aux->der);
     }
     }
+}
+
+int buscar(int datoBuscado, struct nodo *raiz){
+    if(raiz==NULL){
+        return 0;
+    }
+    if(raiz->dato==datoBuscado){
+        return 1;
+    }
+    if(raiz->dato>datoBuscado){
+        return buscar(datoBuscado, raiz->izq);
+    }else{
+        return buscar(datoBuscado, raiz->der);
+    }
+}
+
+int eliminar(int datoBuscado, struct nodo **raiz){
+    if(raiz==NULL){
+        return 0;
+    }
+    if((*raiz)->dato == datoBuscado){
+        struct nodo nodoELim = *raiz;
+        int datoELim=nodoELim->dato;
+        if((*raiz)->izq==NULL && (*raiz)->der==NULL){
+            *raiz=NULL;
+        }
+        free(*raiz);
+        return datoELim;
+    }
+   
 }
