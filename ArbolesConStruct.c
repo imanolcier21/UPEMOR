@@ -10,7 +10,7 @@ struct medicion{
 struct listaMediciones{
     struct medicion datoM;
     struct listaMediciones *siguiente;
-}
+};
 
 struct Persona{
     char nombre[30];
@@ -42,13 +42,14 @@ void inorden(struct nodo *raiz);
 void postorden(struct nodo *raiz);
 void recorridoPorAmplitud(struct nodo *raiz);
 
-int buscar(struct Perona datoBuscado, struct nodo *raiz);
+int buscar(struct Persona datoBuscado, struct nodo *raiz);
 struct Persona eliminar(struct nodo **raiz, struct Persona datoBuscado);
 
 
-/*int main(){
+int main(){
     struct nodo *raiz = NULL;
-    int dato, opcion;
+    struct Persona dato;
+    int opcion;
     do{
         printf(" 1. Insertar un nodo en el arbol binario\n" );
         printf(" 2. Recorrido preorden\n" );
@@ -59,60 +60,60 @@ struct Persona eliminar(struct nodo **raiz, struct Persona datoBuscado);
         printf(" 7. Eliminar un nodo del arbol\n" );
         printf(" 8. Salir\n" );
         printf(" Ingrese una opcion: " );
-        scanf("%d", &opcion);
+        scanf("%d%*c", &opcion);
         switch(opcion){
             case 1:
-                printf(" Ingrese un numero: " );
-                scanf("%d", &dato);
+                printf(" Ingrese el nombre de la persona: " );
+                scanf("%[^\n]", dato.nombre);
+                printf(" Ingrese la edad de la persona: " );
+                scanf("%d%*c", &dato.edad);
                 insertar(dato, &raiz);
                 break;
             case 2:
                 printf(" Recorrido preorden: " );
                 preorden(raiz);
-                printf(" \n " );
+                printf(" \n" );
                 break;
             case 3:
-                printf(" Recorri do inorden: " );
+                printf(" Recorrido inorden: " );
                 inorden(raiz);
-                printf(" \n " );
+                printf(" \n" );
                 break;
             case 4:
                 printf(" Recorrido postorden: " );
                 postorden(raiz);
-                printf(" \n " );
+                printf(" \n" );
                 break;
             case 5:
                 printf(" Recorrido por amplitud: " );
                 recorridoPorAmplitud(raiz);
-                printf(" \n " );
+                printf(" \n" );
                 break;
             case 6:
-                printf(" Ingrese el dato a buscar: " );
-                scanf("%d", &dato);
-                if(buscar(dato, raiz))
-                    printf(" El dato %d se encuentra en el arbol \n " , dato);
-                else
-                    printf(" El dato %d no se encuentra en el arbol \n " , dato);
+                printf(" Ingrese el nombre de la persona a buscar: " );
+                scanf("%[^\n]", dato.nombre);
+                if(buscar(dato, raiz) == 1){
+                    printf(" El dato si se encuentra en el arbol\n" );
+                }else{
+                    printf(" El dato no se encuentra en el arbol\n" );
+                }
                 break;
             case 7:
-                printf(" Ingrese el dato a eliminar: " );
-                scanf("%d", &dato);
-                if(eliminar(&raiz, dato))
-                    printf(" El dato %d se elimino del arbol \n " , dato);
-                else
-                    printf(" El dato %d no se encuentra en el arbol \n " , dato);
+                printf(" Ingrese el nombre de la persona a eliminar: " );
+                scanf("%[^\n]", dato.nombre);
+                dato = eliminar(&raiz, dato);
+                printf(" El dato eliminado es: %s \n" , dato.nombre);
                 break;
             case 8:
-                printf(" Fin del programa " );
+                printf(" Adios \n" );
                 break;
             default:
-                printf(" Opcion incorrecta " );
+                printf(" Opcion incorrecta \n" );
                 break;
-        }
 }
-    while(opcion !=8 );
+    }while(opcion !=8 );
     return 0;
-}*/
+}
 
 
 //función de insertar en arbol binario de forma recursiva 
@@ -129,7 +130,7 @@ int insertar(struct Persona dato, struct nodo **raiz){
         *raiz = nuevo;
         return 1;
     }else{
-        if(strcmp((*raiz)->dato.nombre, dato.n) < 0){
+        if(strcmp((*raiz)->dato.nombre, dato.nombre) < 0){
            return insertar(dato, &(*raiz)->izq);//queremos que los meayores se vayan a la izquierda
         }else{
             return insertar(dato, &(*raiz)->der);
@@ -145,7 +146,7 @@ void preorden(struct nodo *raiz){
     if(raiz == NULL){
         return;
     }else{
-        printf("%d ", raiz->dato);
+        printf("%s  %d\n", raiz->dato.nombre, raiz->dato.edad);
         preorden(raiz->izq);
         preorden(raiz->der);
     }
@@ -156,7 +157,7 @@ void inorden(struct nodo *raiz){
         return;
     }else{
         inorden(raiz->izq);
-        printf("%d ", raiz->dato);
+        printf("%s  %d\n", raiz->dato.nombre, raiz->dato.edad);
         inorden(raiz->der);
     }
 }
@@ -167,7 +168,8 @@ void postorden(struct nodo *raiz){
     }else{
         postorden(raiz->izq);
         postorden(raiz->der);
-        printf("%d ", raiz->dato);
+        printf("%s  %d\n", raiz->dato.nombre, raiz->dato.edad);
+        //imprimirLista(raiz->dato.inicio);
     }
 }
 
@@ -201,7 +203,7 @@ struct nodo * eliminarCola(struct elemento **inicio, struct elemento **fin){
         *fin=NULL;
     }
     free(nodoElim);
-    return datoElim;int buscar(int datoBuscado, struct nodo *raiz);
+    return datoElim;
 }
 
 int vacia(struct elemento *inicio){
@@ -229,7 +231,7 @@ void recorridoPorAmplitud(struct nodo *raiz){
     insertarcola(&inicio, &fin, raiz);
     while(!vacia(inicio)){
     aux=eliminarCola(&inicio, &fin);
-    printf("%d ", aux->dato);
+    printf("%s  %d\n", aux->dato.nombre, raiz->dato.edad);
     if(aux->izq!=NULL){
         insertarcola(&inicio, &fin, aux->izq);
     }
@@ -239,14 +241,14 @@ void recorridoPorAmplitud(struct nodo *raiz){
     }
 }
 
-int buscar(int datoBuscado, struct nodo *raiz){
+int buscar(struct Persona datoBuscado, struct nodo *raiz){
     if(raiz==NULL){
         return 0;
     }
-    if(raiz->dato==datoBuscado){
+    if(strcmp(raiz->dato.nombre,datoBuscado.nombre)==0){
         return 1;
     }
-    if(raiz->dato>datoBuscado){
+    if(strcmp(raiz->dato.nombre,datoBuscado.nombre)<0){
         return buscar(datoBuscado, raiz->izq);
     }else{
         return buscar(datoBuscado, raiz->der);
@@ -267,13 +269,15 @@ int buscar(int datoBuscado, struct nodo *raiz){
         return datoELim;
     }  
 }*/
-int eliminar(struct nodo **raiz, int datoBuscado){
+struct Persona eliminar(struct nodo **raiz, struct Persona datoBuscado){
+    
     if(*raiz==NULL){
-        return -1;
+        struct Persona datoElim={""};
+        return datoElim;
     }
-    if((*raiz) -> dato == datoBuscado){
+    if(strcmp((*raiz) -> dato.nombre, datoBuscado.nombre)==0){
         struct nodo *nodoElim = *raiz, *aux, *aux2;
-        int datoElim = nodoElim -> dato;
+        struct Persona datoElim = nodoElim -> dato;
         if((*raiz) -> izq == NULL && (*raiz) -> der == NULL){
             //Este caso es para cuando es una hoja.
             *raiz = NULL;
@@ -303,7 +307,7 @@ int eliminar(struct nodo **raiz, int datoBuscado){
         free(nodoElim);
         return datoElim;
     }
-    if((*raiz) -> dato > datoBuscado){
+    if(strcmp((*raiz) -> dato.nombre, datoBuscado.nombre)<0){
         return eliminar(&((*raiz) -> izq), datoBuscado);
     }else{
         return eliminar(&((*raiz) -> der), datoBuscado);

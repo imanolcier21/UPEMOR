@@ -184,7 +184,7 @@ struct nodo * eliminarCola(struct elemento **inicio, struct elemento **fin){
         *fin=NULL;
     }
     free(nodoElim);
-    return datoElim;int buscar(int datoBuscado, struct nodo *raiz);
+    return datoElim;
 }
 
 int vacia(struct elemento *inicio){
