@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 struct nodo{
-    int dato;
+    char dato[30];
     struct nodo *izq;
     struct nodo *der;
 };
@@ -18,7 +18,7 @@ struct nodo * eliminarCola(struct elemento **inicio, struct elemento **fin);
 int vacia(struct elemento *inicio);
 struct nodo * verPrimero(struct elemento *inicio);
 
-int insertar(int dato, struct nodo **raiz);
+int insertar(char dato[], struct nodo **raiz);
 void preorden(struct nodo *raiz);
 void inorden(struct nodo *raiz);
 void postorden(struct nodo *raiz);
@@ -98,21 +98,22 @@ int main(){
 
 
 //función de insertar en arbol binario de forma recursiva 
-int insertar(int dato, struct nodo **raiz){
+int insertar(char dato[], struct nodo **raiz){
     if(*raiz == NULL){
         struct nodo *nuevo;
         nuevo = (struct nodo *) malloc(sizeof(struct nodo));
         if(nuevo==NULL){
         return 0;
         }
-        nuevo->dato = dato;
+        //nuevo->dato = dato;
+        strcpy(nuevo->dato, dato);
         nuevo->izq = NULL;
         nuevo->der = NULL;
         *raiz = nuevo;
         return 1;
     }else{
         
-        if((*raiz)->dato > dato){
+        if(strcmp((*raiz)->dato, dato)>0){
            return insertar(dato, &(*raiz)->izq);//queremos que los menores se vayan a la izquierda
         }else{
             return insertar(dato, &(*raiz)->der);

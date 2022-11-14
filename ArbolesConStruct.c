@@ -1,8 +1,26 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+struct medicion{
+    float estatura;
+    float peso;
+};
+
+struct listaMediciones{
+    struct medicion datoM;
+    struct listaMediciones *siguiente;
+}
+
+struct Persona{
+    char nombre[30];
+    int edad;
+    struct listaMediciones *inicio;
+    struct listaMediciones *fin;
+    };
 
 struct nodo{
-    int dato;
+    struct Persona dato;
     struct nodo *izq;
     struct nodo *der;
 };
@@ -18,17 +36,17 @@ struct nodo * eliminarCola(struct elemento **inicio, struct elemento **fin);
 int vacia(struct elemento *inicio);
 struct nodo * verPrimero(struct elemento *inicio);
 
-int insertar(int dato, struct nodo **raiz);
+int insertar(struct Persona dato, struct nodo **raiz);
 void preorden(struct nodo *raiz);
 void inorden(struct nodo *raiz);
 void postorden(struct nodo *raiz);
 void recorridoPorAmplitud(struct nodo *raiz);
 
-int buscar(int datoBuscado, struct nodo *raiz);
-int eliminar(struct nodo **raiz, int datoBuscado);
+int buscar(struct Perona datoBuscado, struct nodo *raiz);
+struct Persona eliminar(struct nodo **raiz, struct Persona datoBuscado);
 
 
-int main(){
+/*int main(){
     struct nodo *raiz = NULL;
     int dato, opcion;
     do{
@@ -94,11 +112,11 @@ int main(){
 }
     while(opcion !=8 );
     return 0;
-}
+}*/
 
 
 //función de insertar en arbol binario de forma recursiva 
-int insertar(int dato, struct nodo **raiz){
+int insertar(struct Persona dato, struct nodo **raiz){
     if(*raiz == NULL){
         struct nodo *nuevo;
         nuevo = (struct nodo *) malloc(sizeof(struct nodo));
@@ -111,9 +129,8 @@ int insertar(int dato, struct nodo **raiz){
         *raiz = nuevo;
         return 1;
     }else{
-        
-        if((*raiz)->dato > dato){
-           return insertar(dato, &(*raiz)->izq);//queremos que los menores se vayan a la izquierda
+        if(strcmp((*raiz)->dato.nombre, dato.n) < 0){
+           return insertar(dato, &(*raiz)->izq);//queremos que los meayores se vayan a la izquierda
         }else{
             return insertar(dato, &(*raiz)->der);
         }
